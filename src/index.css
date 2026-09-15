@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Syne:wght@600;700&display=swap');
+@import 'tailwindcss';
+
+:root {
+  --bg: #0f1210;
+  --panel: #151a17;
+  --surface: #1b221e;
+  --ink: #e8eee9;
+  --muted: #8a968d;
+  --line: #2a332d;
+  --accent: #c4f042;
+  --method-get: #5ec8ff;
+  --method-post: #c4f042;
+  --method-put: #f0b429;
+  --method-patch: #f0b429;
+  --method-delete: #ff6b6b;
+  --display: 'Syne', sans-serif;
+  --sans: 'IBM Plex Sans', sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  font-family: var(--sans);
+  color: var(--ink);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+  height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(196, 240, 66, 0.08), transparent 55%),
+    radial-gradient(900px 500px at 100% 0%, rgba(94, 200, 255, 0.06), transparent 50%),
+    var(--bg);
+}
+
+button,
+a,
+[role='button'],
+label[for],
+summary,
+input[type='checkbox'],
+input[type='radio'],
+input[type='file'],
+select {
+  cursor: pointer;
+}
+
+button:disabled,
+a[aria-disabled='true'] {
+  cursor: not-allowed;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--accent) 40%, transparent);
+  color: var(--ink);
+}
