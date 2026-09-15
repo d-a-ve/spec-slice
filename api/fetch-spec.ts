@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { FetchSpecError, fetchSpecText } from '../src/lib/fetch-spec.ts'
-import { consumeRateLimit, peekRateLimit } from '../src/lib/rate-limit.ts'
+import { FetchSpecError, fetchSpecText } from './lib/fetch-spec.js'
+import { consumeRateLimit, peekRateLimit } from './lib/rate-limit.js'
 
 function clientKey(req: VercelRequest): string {
   const forwarded = req.headers['x-forwarded-for']

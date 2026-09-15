@@ -5,7 +5,6 @@ function isPrivateIp(hostname: string): boolean {
   if (BLOCKED_HOSTS.has(lower)) return true
   if (lower.endsWith('.localhost') || lower.endsWith('.local')) return true
 
-  // IPv4
   const ipv4 = lower.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/)
   if (ipv4) {
     const parts = ipv4.slice(1).map(Number)
@@ -21,7 +20,6 @@ function isPrivateIp(hostname: string): boolean {
     return false
   }
 
-  // IPv6 loopback / link-local / unique local
   if (lower === '::1') return true
   if (lower.startsWith('fe80:')) return true
   if (lower.startsWith('fc') || lower.startsWith('fd')) return true
@@ -74,7 +72,9 @@ export async function fetchSpecText(rawUrl: string): Promise<string> {
       method: 'GET',
       redirect: 'manual',
       signal: controller.signal,
-      headers: { Accept: 'application/json, application/yaml, text/yaml, text/plain, */*' },
+      headers: {
+        Accept: 'application/json, application/yaml, text/yaml, text/plain, */*',
+      },
     })
 
     if (response.status >= 300 && response.status < 400) {

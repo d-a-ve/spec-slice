@@ -19,7 +19,10 @@ export type RateLimitResult =
       retryAfterSeconds: number
     }
 
-export function checkRateLimit(clientKey: string, now = Date.now()): RateLimitResult {
+export function checkRateLimit(
+  clientKey: string,
+  now = Date.now(),
+): RateLimitResult {
   const pruned = prune(buckets.get(clientKey) ?? [], now)
   buckets.set(clientKey, pruned)
 

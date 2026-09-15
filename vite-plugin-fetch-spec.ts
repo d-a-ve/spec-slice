@@ -1,6 +1,6 @@
 import type { IncomingMessage, ServerResponse } from 'node:http'
-import { FetchSpecError, fetchSpecText } from './src/lib/fetch-spec.ts'
-import { consumeRateLimit, peekRateLimit } from './src/lib/rate-limit.ts'
+import { FetchSpecError, fetchSpecText } from './api/lib/fetch-spec.ts'
+import { consumeRateLimit, peekRateLimit } from './api/lib/rate-limit.ts'
 
 function clientKey(req: IncomingMessage): string {
   const forwarded = req.headers['x-forwarded-for']
