@@ -75,3 +75,45 @@ select {
   background: color-mix(in oklab, var(--accent) 40%, transparent);
   color: var(--ink);
 }
+
+.landing {
+  background:
+    linear-gradient(180deg, transparent 0%, var(--bg) 72%),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 47px,
+      color-mix(in oklab, var(--line) 55%, transparent) 47px,
+      color-mix(in oklab, var(--line) 55%, transparent) 48px
+    ),
+    radial-gradient(900px 480px at 12% -8%, rgba(196, 240, 66, 0.14), transparent 55%),
+    radial-gradient(700px 420px at 92% 8%, rgba(94, 200, 255, 0.1), transparent 50%),
+    var(--bg);
+}
+
+.landing-stage {
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--accent) 12%, transparent);
+}
+
+@keyframes landing-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.landing-fade {
+  animation: landing-rise 0.7s ease-out both;
+}
+
+.landing-delay-1 {
+  animation-delay: 80ms;
+}
+
+.landing-delay-2 {
+  animation-delay: 180ms;
+}

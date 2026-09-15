@@ -2,6 +2,9 @@
 
 Local-first OpenAPI endpoint picker. Load a spec from a URL, paste, or file; select operations; copy a flat JSON request array.
 
+- `/` — landing page
+- `/app` — extractor
+
 ## Develop
 
 ```bash
@@ -21,6 +24,6 @@ npm run build
 
 ## Stack
 
-- Vite + React + TypeScript + Tailwind
+- Vite + React + TypeScript + Tailwind + React Router
 - `@scalar/openapi-parser` for parse/dereference (web worker)
 - `localforage` (IndexedDB) for projects
