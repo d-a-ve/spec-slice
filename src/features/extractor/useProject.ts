@@ -76,8 +76,21 @@ function filterSelectedIds(
   selectedIds: string[],
   operations: ExtractedOperation[],
 ): string[] {
-  const ids = new Set(operations.map((op) => op.id))
-  return selectedIds.filter((id) => ids.has(id))
+  const byId = new Set(operations.map((op) => op.id))
+  const byMethodPath = new Map(
+    operations.map((op) => [`${op.method} ${op.path}`, op.id]),
+  )
+  const next: string[] = []
+  const seen = new Set<string>()
+  for (const selected of selectedIds) {
+    const mapped = byId.has(selected)
+      ? selected
+      : byMethodPath.get(selected)
+    if (!mapped || seen.has(mapped)) continue
+    seen.add(mapped)
+    next.push(mapped)
+  }
+  return next
 }
 
 export function useProject() {

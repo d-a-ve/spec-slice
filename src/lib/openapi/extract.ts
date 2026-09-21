@@ -19,6 +19,33 @@ const METHODS: HttpMethod[] = [
   'trace',
 ]
 
+function createEndpointId(
+  method: string,
+  path: string,
+  operationId: string | undefined,
+  used: Set<string>,
+): string {
+  const preferred = operationId?.trim()
+  const fallback = `${method}:${path}`
+  const candidates = preferred ? [preferred, fallback] : [fallback]
+
+  for (const candidate of candidates) {
+    if (!used.has(candidate)) {
+      used.add(candidate)
+      return candidate
+    }
+  }
+
+  let n = 2
+  let id = `${fallback}#${n}`
+  while (used.has(id)) {
+    n += 1
+    id = `${fallback}#${n}`
+  }
+  used.add(id)
+  return id
+}
+
 type AnyRecord = Record<string, unknown>
 
 function asRecord(value: unknown): AnyRecord | undefined {
@@ -200,6 +227,7 @@ export function extractOperations(doc: unknown): ExtractResult {
   const info = asRecord(document.info)
   const paths = asRecord(document.paths) ?? {}
   const operations: ExtractedOperation[] = []
+  const usedIds = new Set<string>()
   const allServers = new Set<string>()
 
   for (const [path, pathValue] of Object.entries(paths)) {
@@ -242,9 +270,17 @@ export function extractOperations(doc: unknown): ExtractResult {
         ? operation.tags.filter((t): t is string => typeof t === 'string')
         : []
 
+      const methodUpper = method.toUpperCase()
       operations.push({
-        id: `${method.toUpperCase()} ${path}`,
-        method: method.toUpperCase(),
+        id: createEndpointId(
+          methodUpper,
+          path,
+          typeof operation.operationId === 'string'
+            ? operation.operationId
+            : undefined,
+          usedIds,
+        ),
+        method: methodUpper,
         path,
         operationId:
           typeof operation.operationId === 'string'

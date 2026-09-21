@@ -12,7 +12,22 @@ const METHOD_CLASS: Record<string, string> = {
 
 type Row =
   | { type: 'tag'; tag: string; count: number }
-  | { type: 'op'; operation: ExtractedOperation }
+  | { type: 'op'; tag: string; operation: ExtractedOperation }
+
+function endpointMatchesQuery(op: ExtractedOperation, query: string): boolean {
+  const q = query.trim().toLowerCase()
+  if (!q) return true
+
+  const fields = [
+    op.id,
+    op.path,
+    op.method,
+    op.operationId ?? '',
+    op.summary ?? '',
+    ...op.tags,
+  ]
+  return fields.some((field) => field.toLowerCase().includes(q))
+}
 
 type Props = {
   operations: ExtractedOperation[]
@@ -43,20 +58,7 @@ export function EndpointList({
   const parentRef = useRef<HTMLDivElement>(null)
 
   const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase()
-    if (!q) return operations
-    return operations.filter((op) => {
-      const hay = [
-        op.path,
-        op.method,
-        op.operationId ?? '',
-        op.summary ?? '',
-        ...op.tags,
-      ]
-        .join(' ')
-        .toLowerCase()
-      return hay.includes(q)
-    })
+    return operations.filter((op) => endpointMatchesQuery(op, search))
   }, [operations, search])
 
   const rows = useMemo(() => {
@@ -75,7 +77,7 @@ export function EndpointList({
     )) {
       result.push({ type: 'tag', tag, count: ops.length })
       for (const operation of ops) {
-        result.push({ type: 'op', operation })
+        result.push({ type: 'op', tag, operation })
       }
     }
     return result
@@ -153,7 +155,7 @@ export function EndpointList({
             const isActive = op.id === activeId
             return (
               <div
-                key={op.id}
+                key={`${row.tag}:${op.id}`}
                 className={`absolute inset-x-0 flex items-center gap-2 border-b border-[var(--line)]/60 px-3 ${isActive ? 'bg-[var(--surface)]' : ''}`}
                 style={{
                   transform: `translateY(${item.start}px)`,
